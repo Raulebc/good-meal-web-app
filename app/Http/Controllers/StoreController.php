@@ -6,19 +6,25 @@ use App\Models\Stores\Store;
 use Illuminate\Http\Response;
 use App\Services\Sanitization;
 use App\Http\Resources\StoreResource;
-use App\Http\Requests\StoreStoreRequest;
+use App\Traits\Stores\PaginationTrait;
 use App\Http\Requests\UpdateStoreRequest;
+use App\Http\Requests\Stores\StoreIndexRequest;
+use App\Http\Requests\Stores\StoreStoreRequest;
 
 class StoreController extends Controller
 {
+    use PaginationTrait;
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(StoreIndexRequest $request)
     {
+        $stores = $this->paginate($request, Store::query());
 
+        return StoreResource::collection($stores);
     }
 
     /**
