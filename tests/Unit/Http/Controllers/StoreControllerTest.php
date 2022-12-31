@@ -85,9 +85,8 @@ class StoreControllerTest extends TestCase
             ]);
     }
 
-    // test that store is returned
     /** @test */
-    public function it_store_response_has_correct_structure()
+    public function it_store_method_response_has_correct_structure()
     {
         Sanctum::actingAs($this->user, ['*']);
 
@@ -109,7 +108,6 @@ class StoreControllerTest extends TestCase
             ]);
     }
 
-    // test that the correct status code is returned
     /** @test */
     public function it_store_response_has_correct_status_code()
     {
@@ -119,7 +117,6 @@ class StoreControllerTest extends TestCase
             ->assertStatus(201);
     }
 
-    // test that the store is not created if the user is not authenticated
     /** @test */
     public function it_store_is_not_created_if_user_is_not_authenticated()
     {
@@ -128,7 +125,6 @@ class StoreControllerTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    // show method tests
     /** @test */
     public function it_show_method_returns_correct_structure_response()
     {
@@ -267,8 +263,6 @@ class StoreControllerTest extends TestCase
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    // tests for the destroy method
-    // - test that the store is deleted from the database
     /** @test */
     public function it_store_is_deleted_from_database_correctly()
     {
@@ -284,7 +278,7 @@ class StoreControllerTest extends TestCase
         $this->assertDatabaseMissing('stores', $store->toArray());
     }
 
-    // - test that the correct status code is returned
+    // STORES METHODS TESTS
     /** @test */
     public function it_destroy_method_returns_correct_status_code()
     {
