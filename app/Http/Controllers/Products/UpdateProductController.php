@@ -29,7 +29,8 @@ class UpdateProductController extends Controller
             return Sanitization::sanitize(new Product(), $productData);
         });
 
-        $product->update($sanitizedData);
+        $product->updateProduct($sanitizedData);
+        $product->refresh();
 
         return (new ProductResource($product))
                 ->additional(['message' => 'Producto actualizado correctamente'])

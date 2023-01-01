@@ -43,4 +43,23 @@ class Product extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    /**
+     * Update the product.
+     *
+     * @param  array  $productData
+     * @return void
+     */
+    public function updateProduct(array $productData): void
+    {
+        if (array_key_exists('store_id', $productData)) {
+            $store = Store::find($productData['store_id']);
+
+            if ($this->store->owner->isNotOwnerOf($store)) {
+                unset($productData['store_id']);
+            }
+        }
+
+        $this->update($productData);
+    }
 }
