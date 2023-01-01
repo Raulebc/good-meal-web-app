@@ -4,6 +4,8 @@ namespace Tests\Feature\Http\Controllers\Products;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Stores\Store;
+use App\Models\Categories\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -12,6 +14,9 @@ class CreateProductControllerTest extends TestCase
     use DatabaseMigrations;
     use RefreshDatabase;
 
+    /**
+     * @var \App\Models\User
+     */
     protected $user;
 
     protected function setUp(): void
@@ -20,65 +25,64 @@ class CreateProductControllerTest extends TestCase
 
         $this->user = User::factory()->create();
     }
-    public function it_store_resource_is_returned_with_correct_data()
-    {
-        Sanctum::actingAs($this->user, ['*']);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
-            ->assertExactJson([
-                'message' => 'Tienda creada correctamente',
-                'data' => [
-                    'id' => 1,
-                    'name' => $this->fakeStoreData['name'],
-                    'description' => $this->fakeStoreData['description'],
-                    'address' => $this->fakeStoreData['address'],
-                    'phone' => $this->fakeStoreData['phone'],
-                    'email' => $this->fakeStoreData['email'],
-                    'website' => $this->fakeStoreData['website'],
-                    'owner_id' => $this->fakeStoreData['owner_id'],
-                    'created_at' => Carbon::now()->startOfSecond()->toISOString(),
-                    'updated_at' => Carbon::now()->startOfSecond()->toISOString(),
-                ],
-            ]);
+    /** @test */
+    public function it_product_is_created_correctly_in_database()
+    {
+        $this->actingAs($this->user);
+
+        $this->postJson(route('products.store'), [
+            'name' => 'Product 1',
+            'description' => 'Product 1 description',
+            'price' => 1000,
+            'stock' => 10,
+            'category_id' => Category::factory()->create()->id,
+            'store_id' => Store::factory()->create([
+                'owner_id' => $this->user->id,
+            ])->id,
+        ])->assertStatus(201);
+
+        $this->assertDatabaseHas('products', [
+            'name' => 'Product 1',
+            'description' => 'Product 1 description',
+            'price' => 1000,
+            'stock' => 10,
+        ]);
     }
 
     /** @test */
-    public function it_store_method_response_has_correct_structure()
+    public function it_function_returns_an_http_response()
     {
-        Sanctum::actingAs($this->user, ['*']);
+        $this->actingAs($this->user);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
-            ->assertJsonStructure([
-                'message',
-                'data' => [
-                    'id',
-                    'name',
-                    'description',
-                    'address',
-                    'phone',
-                    'email',
-                    'website',
-                    'owner_id',
-                    'created_at',
-                    'updated_at',
-                ],
-            ]);
+        $response = $this->postJson(route('products.store'), [
+            'name' => 'Product 1',
+            'description' => 'Product 1 description',
+            'price' => 1000,
+            'stock' => 10,
+            'category_id' => Category::factory()->create()->id,
+            'store_id' => Store::factory()->create([
+                'owner_id' => $this->user->id,
+            ])->id,
+        ])->assertStatus(201);
     }
 
     /** @test */
-    public function it_store_response_has_correct_status_code()
+    public function it_product_cannot_belong_to_a_store_that_is_not_owned_by_the_user()
     {
-        Sanctum::actingAs($this->user, ['*']);
+        $this->actingAs($this->user);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
-            ->assertStatus(201);
-    }
-
-    /** @test */
-    public function it_store_is_not_created_if_user_is_not_authenticated()
-    {
-        // we run the api request as a non authenticated user
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
-            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $this->postJson(route('products.store'), [
+            'name' => 'Product 1',
+            'description' => 'Product 1 description',
+            'price' => 1000,
+            'stock' => 10,
+            'category_id' => Category::factory()->create()->id,
+            'store_id' => Store::factory()->create([
+                'owner_id' => User::factory()->create()->id,
+            ])->id,
+        ])->assertJsonValidationErrors([
+            'store_id' => 'La tienda seleccionada no existe o no pertenece al usuario'
+        ])->assertStatus(422);
     }
 }

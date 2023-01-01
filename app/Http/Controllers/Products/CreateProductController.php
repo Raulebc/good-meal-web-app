@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
+use Illuminate\Http\Response;
+use App\Services\Sanitization;
+use App\Models\Products\Product;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Products\ProductResource;
+use App\Http\Requests\Products\CreateProductRequest;
 
 class CreateProductController extends Controller
 {
@@ -13,8 +17,17 @@ class CreateProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(CreateProductRequest $request)
     {
-        //
+        $sanitizedData = $request->input(null, function ($productData) {
+            return Sanitization::sanitize(new Product(), $productData);
+        });
+
+        $product = Product::create($sanitizedData);
+
+        return (new ProductResource($product))
+                ->additional(['message' => 'Producto creado correctamente'])
+                ->response()
+                ->setStatusCode(Response::HTTP_CREATED);
     }
 }

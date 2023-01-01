@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Stores\Store;
+use App\Models\Products\Product;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,8 +45,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isNotOwnerOf(Store $store): bool
+    /**
+     * Depending on the model, we check if:
+     * - the user is the owner of the store
+     * - the user is the owner of the product
+     * 
+     * @param Model $model
+     * @return bool
+     */
+    public function isNotOwnerOf(Model $model): bool
     {
-        return $this->id !== $store->owner_id;
+        if ($model instanceof Store) {
+            return $this->id !== $model->owner_id;
+        }
+
+        if ($model instanceof Product) {
+            return $this->id !== $model->store->owner_id;
+        }
+
+        return false;
     }
 }

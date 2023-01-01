@@ -41,10 +41,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::enableForeignKeyConstraints();
+        Schema::disableForeignKeyConstraints();
         
         Schema::dropIfExists('products');
         
-        Schema::disableForeignKeyConstraints();
+        Schema::enableForeignKeyConstraints();
     }
 };

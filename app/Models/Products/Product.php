@@ -2,9 +2,11 @@
 
 namespace App\Models\Products;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Stores\Store;
+use App\Models\Categories\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {

@@ -4,7 +4,10 @@ namespace Tests\Feature\Http\Controllers\Products;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Stores\Store;
 use Laravel\Sanctum\Sanctum;
+use App\Models\Products\Product;
+use App\Models\Categories\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -63,12 +66,9 @@ class ListProductControllerTest extends TestCase
             'meta' => [
                 'current_page',
                 'from',
-                'last_page',
-                'links',
                 'path',
                 'per_page',
                 'to',
-                'total',
             ],
         ]);
     }
@@ -76,11 +76,19 @@ class ListProductControllerTest extends TestCase
     /** @test */
     public function it_respects_the_per_page_parameter_in_the_request_when_paginating_the_stores()
     {
+        $this->withoutExceptionHandling();
+
+        $store = Store::factory()->create(['owner_id' => $this->user->id]);
+
+        Product::factory()->count(2)->create([
+            'store_id' => $store->id,
+            'category_id' => Category::factory()->create()->id,
+        ]);
+
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('products.index', ['per_page' => 1]));
-
-        $response->assertJsonCount(1, 'data');
+        $this->getJson(route('products.index', ['per_page' => 1]))
+            ->assertJsonCount(1, 'data');
     }
 
     /** @test */

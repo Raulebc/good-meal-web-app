@@ -2,8 +2,10 @@
 
 namespace App\Models\Stores;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Products\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Store extends Model
 {
@@ -33,5 +35,15 @@ class Store extends Model
                 'owner_id' => auth()->id(),
             ]
         ));
+    }
+
+    /**
+     * Get all of the products for the Store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }
