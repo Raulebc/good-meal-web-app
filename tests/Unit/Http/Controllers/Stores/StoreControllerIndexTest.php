@@ -31,9 +31,8 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('stores.index'));
-
-        $response->assertStatus(200);
+        $this->getJson(route('stores.index'))
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -131,5 +130,87 @@ class StoreControllerIndexTest extends TestCase
             ->assertStatus(422);
     }
 
+    /** @test */
+    public function it_per_page_must_be_equals_or_more_than_one()
+    {
+                Sanctum::actingAs($this->user);
 
+        $this->getJson(route('stores.index', ['per_page' => 0]))
+            ->assertJsonValidationErrors([
+                'per_page' => 'El campo per page debe ser al menos 1.',
+            ])
+            ->assertStatus(422);
+    }
+
+    /** @test */
+    public function it_per_page_must_be_equals_or_less_than_100()
+    {
+        Sanctum::actingAs($this->user);
+
+        $this->getJson(route('stores.index', ['per_page' => 101]))
+            ->assertJsonValidationErrors([
+                'per_page' => 'El campo per page no debe ser mayor que 100.',
+            ])
+            ->assertStatus(422);
+    }
+
+    // test that the data is correct.
+    /** @test */
+    public function it_returns_the_correct_data()
+    {
+        $store1 = Store::factory()->create([
+            'owner_id' => $this->user->id,
+        ]);
+
+        $store2 = Store::factory()->create([
+            'owner_id' => $this->user->id,
+        ]);
+
+        Sanctum::actingAs($this->user);
+
+        $this->getJson('/api/stores?per_page=2&page=1')
+            ->assertExactJson(
+                [
+                    'data' => [
+                        [
+                            'id' => $store1->id,
+                            'name' => $store1->name,
+                            'description' => $store1->description,
+                            'address' => $store1->address,
+                            'phone' => $store1->phone,
+                            'email' => $store1->email,
+                            'website' => $store1->website,
+                            'owner_id' => $store1->owner_id,
+                            'created_at' => $store1->created_at->startOfSecond()->toISOString(),
+                            'updated_at' => $store1->updated_at->startOfSecond()->toISOString(),
+                        ],
+                        [
+                            'id' => $store2->id,
+                            'name' => $store2->name,
+                            'description' => $store2->description,
+                            'address' => $store2->address,
+                            'phone' => $store2->phone,
+                            'email' => $store2->email,
+                            'website' => $store2->website,
+                            'owner_id' => $store2->owner_id,
+                            'created_at' => $store2->created_at->startOfSecond()->toISOString(),
+                            'updated_at' => $store2->updated_at->startOfSecond()->toISOString(),
+                        ],
+                    ],
+                    'links' => [
+                        'first' => route('stores.index', ['page' => 1]),
+                        'next' => null,
+                        'prev' => null,
+                        'last' => null,
+                    ],
+                    'meta' => [
+                        'current_page' => 1,
+                        'from' => 1,
+                        'path' => route('stores.index'),
+                        'per_page' => "2",
+                        'to' => 2,
+                    ],
+                ]
+            );
+    }
 }
