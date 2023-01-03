@@ -1,22 +1,38 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, usePage } from '@inertiajs/inertia-vue3';
+import StoreCard from '@/Components/StoreCard.vue';
+
+// we fetch all the stores from the backend
+defineProps(['stores']);
+
 </script>
 
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
-                </div>
-            </div>
+        <div class="flex justify-between border-b border-b-gray-100">
+            <div class="flex justify-center w-1/3">
+				<a href="#" class="border-b-pink-500 border-b-4 w-full flex justify-center p-2">
+					Con stock
+				</a>
+			</div>
+            <div class="flex justify-center w-1/3">
+				<a href="#" class="w-full flex justify-center p-2">
+					Sin stock
+				</a>
+			</div>
+            <div class="flex justify-center w-1/3">
+				<a href="#" class="w-full flex justify-center p-2">
+					Favoritos
+				</a>
+			</div>
         </div>
+		<!-- card made with tailwindcss -->
+        <!-- we iterate over the stores and pass the data to the component -->
+        <!-- <div class="flex flex-wrap justify-center"> -->
+        <StoreCard v-for="store in stores" :key="store.id" :store="store" />
+        <!-- </div> -->
     </AuthenticatedLayout>
 </template>

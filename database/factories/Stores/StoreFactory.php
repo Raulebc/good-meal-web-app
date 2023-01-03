@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Stores;
 
+use App\Models\User;
 use App\Models\Stores\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,7 +32,7 @@ class StoreFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'website' => $this->faker->url,
-            'owner_id' => $this->faker->numberBetween(1, 10),
+            'owner_id' => User::factory()->create()->id,
         ];
     }
 }
