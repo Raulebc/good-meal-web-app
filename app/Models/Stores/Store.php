@@ -22,6 +22,9 @@ class Store extends Model
         'email',
         'website',
         'owner_id',
+
+        // 'latitude',
+        // 'longitude',
     ];
 
     /**

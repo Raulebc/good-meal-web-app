@@ -6,7 +6,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/inertia-vue3';
-import Footer from '@/Components/Footer.vue';
+import Footer from '@/Layouts/Footer.vue';
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -36,7 +36,6 @@ const showingNavigationDropdown = ref(false);
     </div>
     <div class="items-center">
         <slot />
-
     </div>
     <!-- we fixed the next div to the bottom of the screen -->
 

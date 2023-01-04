@@ -3,13 +3,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/inertia-vue3';
 import StoreCard from '@/Components/StoreCard.vue';
 
-// we fetch all the stores from the backend
 defineProps(['stores']);
 
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Home" />
 
     <AuthenticatedLayout>
         <div class="flex justify-between border-b border-b-gray-100">
@@ -29,10 +28,7 @@ defineProps(['stores']);
 				</a>
 			</div>
         </div>
-		<!-- card made with tailwindcss -->
-        <!-- we iterate over the stores and pass the data to the component -->
-        <!-- <div class="flex flex-wrap justify-center"> -->
-        <StoreCard v-for="store in stores" :key="store.id" :store="store" />
-        <!-- </div> -->
+
+		<StoreCard v-for="store in stores" :key="store.id" :store="store" />
     </AuthenticatedLayout>
 </template>
