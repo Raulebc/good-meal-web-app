@@ -19,7 +19,7 @@ use App\Http\Controllers\Purchases\ShowPurchaseOrdersController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Dashboard', [
+    return Inertia::render('Stores/Index', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -27,22 +27,34 @@ Route::get('/', function () {
     ]);
 });
 
-
+Route::get('store-hour', function () {
+    return Store::with(['storeHours' => function ($query) {
+        $query->where('day', now()->dayOfWeek)->first();
+    }])->withCount('products')->get();
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/home', function () {
-        return Inertia::render('Dashboard', [
-            // we get the stores with the quantity of products
-            // 'stores' => Store::withCount('products')->get(),
+    Route::get('/stores', function () {
+        return Inertia::render('Stores/Index', [
             'stores' => Store::with(['storeHours' => function ($query) {
                 $query->where('day', now()->dayOfWeek)->first();
             }])->withCount('products')->get(),
         ]);
-    })->name('home');
+    })->name('stores');
+
+    Route::get('/stores/{store}', function (Store $store) {
+        return Inertia::render('Stores/Show', [
+            'store' => $store->load(['storeHours' => function ($query) {
+                $query->where('day', now()->dayOfWeek)->first();
+            }]),
+            // we get the cheaper product of the store that have stock
+            'from_product' => $store->products()->where('stock', '>', 0)->orderBy('price', 'asc')->first(),
+        ]);
+    })->name('stores.show');
 
     Route::get('/purchase-orders', ShowPurchaseOrdersController::class)->name('purchase-orders');
 });
