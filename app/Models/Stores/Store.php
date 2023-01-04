@@ -72,4 +72,17 @@ class Store extends Model
     {
         return $this->hasMany(StoreHour::class);
     }
+
+    /**
+     * Get the store that have the lowest price product.
+     * The store must have at least one product with stock.
+     * 
+     * @return Store|null
+     */
+    public function fromProduct()
+    {
+        $this->products()
+            ->where('stock', '>', 0)
+            ->orderBy('price', 'asc');
+    }
 }

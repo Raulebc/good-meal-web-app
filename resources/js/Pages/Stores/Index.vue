@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/inertia-vue3';
 import StoreCard from '@/Components/StoreCard.vue';
+import GeneralHeader from '@/Layouts/Headers/Global.vue';
 
 defineProps(['stores']);
 
@@ -11,6 +12,8 @@ defineProps(['stores']);
     <Head title="Home" />
 
     <AuthenticatedLayout>
+		<GeneralHeader />
+
         <div class="flex justify-between border-b border-b-gray-100">
             <div class="flex justify-center w-1/3">
 				<a href="#" class="border-b-pink-500 border-b-4 w-full flex justify-center p-2">

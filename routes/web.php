@@ -5,6 +5,7 @@ use App\Models\Stores\Store;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Stores\ListStoresController;
 use App\Http\Controllers\Purchases\ShowPurchaseOrdersController;
 
 /*
@@ -38,21 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/stores', function () {
-        return Inertia::render('Stores/Index', [
-            'stores' => Store::with(['storeHours' => function ($query) {
-                $query->where('day', now()->dayOfWeek)->first();
-            }])->withCount('products')->get(),
-        ]);
-    })->name('stores');
+    Route::get('/stores', ListStoresController::class)->name('stores');
 
     Route::get('/stores/{store}', function (Store $store) {
         return Inertia::render('Stores/Show', [
             'store' => $store->load(['storeHours' => function ($query) {
                 $query->where('day', now()->dayOfWeek)->first();
             }]),
-            // we get the cheaper product of the store that have stock
-            'from_product' => $store->products()->where('stock', '>', 0)->orderBy('price', 'asc')->first(),
+
         ]);
     })->name('stores.show');
 
