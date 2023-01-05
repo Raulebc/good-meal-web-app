@@ -21,14 +21,14 @@ fi
 php artisan sail:install -n --with=selenium
 echo "${GREEN}Instalación de Sail terminada"
 
-# para este proyecto elegimos la opcion [0] mysql
+# Generamos la key
 ./vendor/bin/sail artisan key:generate
 
 # Removemos cualquier contenedor "orphan" para este proyecto
 docker-compose down --remove-orphans
 
 # Levantamos los contenedores
-./vendor/bin/sail up -d
+./vendor/bin/sail up -d --remove-orphans --no-recreate --build
 echo "${GREEN}Contenedores levantados"
 
 # Creamos la base de datos
