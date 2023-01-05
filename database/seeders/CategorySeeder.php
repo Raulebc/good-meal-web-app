@@ -17,43 +17,53 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert(
             [
-                'name' => 'Category 1',
+                'name' => 'Leches y quesos',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 2',
+                'name' => 'snacks',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 3',
+                'name' => 'groceries',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 4',
+                'name' => 'cereals',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 5',
+                'name' => 'beberages',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 6',
+                'name' => 'coffe',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 7',
+                'name' => 'canned food',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 8',
+                'name' => 'cleaning products',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 9',
+                'name' => 'frozen food',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
             [
-                'name' => 'Category 10',
+                'name' => 'breads',
+                'image' => public_path('fake/product/cheese.png'),
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet hendrerit urna. Vestibulbitant morbi tristique',
             ],
         );

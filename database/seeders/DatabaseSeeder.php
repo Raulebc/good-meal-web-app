@@ -4,11 +4,14 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\Products\Product;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\StoreSeeder;
 use Database\Seeders\ProductSeeder;
 use Database\Seeders\CategorySeeder;
+use Illuminate\Support\Facades\Hash;
 use Database\Seeders\StoreHourSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
         // The order of the seeders must be maintained, 
         // as some seeders depend on the data created by other seeders.
         $this->call([
@@ -29,5 +33,13 @@ class DatabaseSeeder extends Seeder
             StoreHourSeeder::class,
             ProductSeeder::class,
         ]);
+
+        User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'user@email.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        Product::factory()->count(10)->create();
     }
 }
