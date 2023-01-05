@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Products;
 
+use App\Models\Stores\Store;
+use App\Models\Categories\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,8 +32,8 @@ class ProductFactory extends Factory
             'discount' => $this->faker->randomNumber(2),
             'stock' => $this->faker->randomNumber(2),
             'image' => $this->faker->imageUrl(),
-            'category_id' => $this->faker->randomNumber(2),
-            'store_id' => $this->faker->randomNumber(2),
+            'category_id' => Category::all()->random()->id,
+            'store_id' => Store::all()->random()->id,
         ];
     }
 }
