@@ -17,23 +17,29 @@ fi
 # copiamos el archivo .env.example a .env
 [ ! -f ".env" ] && cp .env.example .env
 
+
+# Creamos la base de datos
+touch ./database/good_meal.sqlite
+echo "${GREEN}Base de datos creada."
+
+
 # Instalamos las dependencias
 php artisan sail:install -n --with=selenium
 echo "${GREEN}Instalación de Sail terminada"
 
+
 # Generamos la key
 ./vendor/bin/sail artisan key:generate
 
+
 # Removemos cualquier contenedor "orphan" para este proyecto
 docker-compose down --remove-orphans
+
 
 # Levantamos los contenedores
 ./vendor/bin/sail up -d --remove-orphans --no-recreate --build
 echo "${GREEN}Contenedores levantados"
 
-# Creamos la base de datos
-touch ./database/good_meal.sqlite
-echo "${GREEN}Base de datos creada."
 
 # Ejecutamos las migraciones con los seeders
 ./vendor/bin/sail artisan migrate:fresh --seed
