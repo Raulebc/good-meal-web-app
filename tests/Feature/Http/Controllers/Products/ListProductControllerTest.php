@@ -30,7 +30,7 @@ class ListProductControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('products.index'));
+        $response = $this->getJson(route('api.products.index'));
 
         $response->assertStatus(200);
     }
@@ -40,7 +40,7 @@ class ListProductControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('products.index'));
+        $response = $this->getJson(route('api.products.index'));
 
         $response->assertJsonStructure([
             'data' => [
@@ -87,7 +87,7 @@ class ListProductControllerTest extends TestCase
 
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('products.index', ['per_page' => 1]))
+        $this->getJson(route('api.products.index', ['per_page' => 1]))
             ->assertJsonCount(1, 'data');
     }
 
@@ -96,7 +96,7 @@ class ListProductControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('products.index', ['per_page' => 'invalid']));
+        $response = $this->getJson(route('api.products.index', ['per_page' => 'invalid']));
 
         $response->assertStatus(422);
     }

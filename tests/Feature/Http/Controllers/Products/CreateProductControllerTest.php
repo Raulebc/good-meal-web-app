@@ -31,7 +31,7 @@ class CreateProductControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $this->postJson(route('products.store'), [
+        $this->postJson(route('api.products.store'), [
             'name' => 'Product 1',
             'description' => 'Product 1 description',
             'price' => 1000,
@@ -55,7 +55,7 @@ class CreateProductControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->postJson(route('products.store'), [
+        $response = $this->postJson(route('api.products.store'), [
             'name' => 'Product 1',
             'description' => 'Product 1 description',
             'price' => 1000,
@@ -72,7 +72,7 @@ class CreateProductControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $this->postJson(route('products.store'), [
+        $this->postJson(route('api.products.store'), [
             'name' => 'Product 1',
             'description' => 'Product 1 description',
             'price' => 1000,

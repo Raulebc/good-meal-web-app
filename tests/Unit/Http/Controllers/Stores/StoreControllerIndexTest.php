@@ -31,7 +31,7 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index'))
+        $this->getJson(route('api.stores.index'))
             ->assertStatus(200);
     }
 
@@ -40,7 +40,7 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson(route('stores.index'));
+        $response = $this->getJson(route('api.stores.index'));
 
         $response->assertJsonStructure([
             'data' => [
@@ -76,7 +76,7 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index'))->assertJsonStructure([
+        $this->getJson(route('api.stores.index'))->assertJsonStructure([
             'data' => [
                 '*' => [
                     'id',
@@ -114,7 +114,7 @@ class StoreControllerIndexTest extends TestCase
 
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index', ['per_page' => 5]))
+        $this->getJson(route('api.stores.index', ['per_page' => 5]))
             ->assertJsonCount(5, 'data');
     }
 
@@ -123,7 +123,7 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index', ['per_page' => 'invalid']))
+        $this->getJson(route('api.stores.index', ['per_page' => 'invalid']))
             ->assertJsonValidationErrors([
                 'per_page' => 'El campo per page debe ser un número entero',
             ])
@@ -135,7 +135,7 @@ class StoreControllerIndexTest extends TestCase
     {
                 Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index', ['per_page' => 0]))
+        $this->getJson(route('api.stores.index', ['per_page' => 0]))
             ->assertJsonValidationErrors([
                 'per_page' => 'El campo per page debe ser al menos 1.',
             ])
@@ -147,7 +147,7 @@ class StoreControllerIndexTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->getJson(route('stores.index', ['per_page' => 101]))
+        $this->getJson(route('api.stores.index', ['per_page' => 101]))
             ->assertJsonValidationErrors([
                 'per_page' => 'El campo per page no debe ser mayor que 100.',
             ])
@@ -176,6 +176,7 @@ class StoreControllerIndexTest extends TestCase
                             'id' => $store1->id,
                             'name' => $store1->name,
                             'description' => $store1->description,
+                            'has_stock' => $store1->has_stock,
                             'address' => $store1->address,
                             'phone' => $store1->phone,
                             'email' => $store1->email,
@@ -188,6 +189,7 @@ class StoreControllerIndexTest extends TestCase
                             'id' => $store2->id,
                             'name' => $store2->name,
                             'description' => $store2->description,
+                            'has_stock' => $store2->has_stock,
                             'address' => $store2->address,
                             'phone' => $store2->phone,
                             'email' => $store2->email,
@@ -198,7 +200,7 @@ class StoreControllerIndexTest extends TestCase
                         ],
                     ],
                     'links' => [
-                        'first' => route('stores.index', ['page' => 1]),
+                        'first' => route('api.stores.index', ['page' => 1]),
                         'next' => null,
                         'prev' => null,
                         'last' => null,
@@ -206,7 +208,7 @@ class StoreControllerIndexTest extends TestCase
                     'meta' => [
                         'current_page' => 1,
                         'from' => 1,
-                        'path' => route('stores.index'),
+                        'path' => route('api.stores.index'),
                         'per_page' => "2",
                         'to' => 2,
                     ],

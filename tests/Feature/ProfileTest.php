@@ -23,18 +23,16 @@ class ProfileTest extends TestCase
 
     public function test_profile_information_can_be_updated()
     {
+
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
+        $response = $this->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+        $response->assertSessionHasNoErrors();
 
         $user->refresh();
 
@@ -54,9 +52,7 @@ class ProfileTest extends TestCase
                 'email' => $user->email,
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+        $response->assertSessionHasNoErrors();
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }

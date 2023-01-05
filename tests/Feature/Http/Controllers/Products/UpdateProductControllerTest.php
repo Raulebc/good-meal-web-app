@@ -39,7 +39,7 @@ class UpdateProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->putJson(route('products.update', $product))
+        $this->putJson(route('api.products.update', $product))
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
@@ -78,7 +78,7 @@ class UpdateProductControllerTest extends TestCase
             ])->id,
         ];
 
-        $this->putJson(route('products.update', $product), $newProductData)
+        $this->putJson(route('api.products.update', $product), $newProductData)
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
                 'data' => [
@@ -138,7 +138,7 @@ class UpdateProductControllerTest extends TestCase
             ])->id,
         ];
 
-        $this->putJson(route('products.update', $product), $newProductData)
+        $this->putJson(route('api.products.update', $product), $newProductData)
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
                 'data' => [
@@ -200,7 +200,7 @@ class UpdateProductControllerTest extends TestCase
             'store_id' => $product->store_id,
         ]);
 
-        $this->putJson(route('products.update', $product), $newProductData)
+        $this->putJson(route('api.products.update', $product), $newProductData)
             ->assertStatus(Response::HTTP_OK);
 
         $this->assertDatabaseHas('products', [
@@ -216,3 +216,4 @@ class UpdateProductControllerTest extends TestCase
         ]);
     }
 }
+

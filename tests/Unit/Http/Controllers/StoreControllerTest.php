@@ -44,7 +44,7 @@ class StoreControllerTest extends TestCase
 
         $store = $this->fakeStoreData;
 
-        $this->postJson(route('stores.store'), $store)
+        $this->postJson(route('api.stores.store'), $store)
             ->assertCreated();
 
         $this->assertDatabaseHas('stores', $store);
@@ -56,7 +56,7 @@ class StoreControllerTest extends TestCase
     // {
     //     $this->withoutExceptionHandling();
 
-    //     $this->postJson(route('stores.store'), $this->fakeStoreData)
+    //     $this->postJson(route('api.stores.store'), $this->fakeStoreData)
     //         ->assertJson([
     //             'message' => 'Tienda creada correctamente',
     //         ]);
@@ -67,7 +67,7 @@ class StoreControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
+        $this->postJson(route('api.stores.store'), $this->fakeStoreData)
             ->assertExactJson([
                 'message' => 'Tienda creada correctamente',
                 'data' => [
@@ -79,6 +79,7 @@ class StoreControllerTest extends TestCase
                     'email' => $this->fakeStoreData['email'],
                     'website' => $this->fakeStoreData['website'],
                     'owner_id' => $this->fakeStoreData['owner_id'],
+                    'has_stock' => 0,
                     'created_at' => Carbon::now()->startOfSecond()->toISOString(),
                     'updated_at' => Carbon::now()->startOfSecond()->toISOString(),
                 ],
@@ -90,7 +91,7 @@ class StoreControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
+        $this->postJson(route('api.stores.store'), $this->fakeStoreData)
             ->assertJsonStructure([
                 'message',
                 'data' => [
@@ -113,7 +114,7 @@ class StoreControllerTest extends TestCase
     {
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
+        $this->postJson(route('api.stores.store'), $this->fakeStoreData)
             ->assertStatus(201);
     }
 
@@ -121,7 +122,7 @@ class StoreControllerTest extends TestCase
     public function it_store_is_not_created_if_user_is_not_authenticated()
     {
         // we run the api request as a non authenticated user
-        $this->postJson(route('stores.store'), $this->fakeStoreData)
+        $this->postJson(route('api.stores.store'), $this->fakeStoreData)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -134,7 +135,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->getJson(route('stores.show', $store->id))
+        $this->getJson(route('api.stores.show', $store->id))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -161,7 +162,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->getJson(route('stores.show', $store->id))
+        $this->getJson(route('api.stores.show', $store->id))
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
@@ -190,7 +191,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->putJson(route('stores.update', $store->id), $this->fakeStoreData)
+        $this->putJson(route('api.stores.update', $store->id), $this->fakeStoreData)
             ->assertStatus(200);
 
         $this->assertDatabaseHas('stores', $this->fakeStoreData);
@@ -205,7 +206,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->putJson(route('stores.update', $store->id), $this->fakeStoreData)
+        $this->putJson(route('api.stores.update', $store->id), $this->fakeStoreData)
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Tienda actualizada correctamente',
@@ -233,7 +234,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->putJson(route('stores.update', $store->id), $this->fakeStoreData)
+        $this->putJson(route('api.stores.update', $store->id), $this->fakeStoreData)
             ->assertStatus(200);
     }
 
@@ -245,7 +246,7 @@ class StoreControllerTest extends TestCase
         ]);
 
         // we run the api request as a non authenticated user
-        $this->putJson(route('stores.update', $store->id), $this->fakeStoreData)
+        $this->putJson(route('api.stores.update', $store->id), $this->fakeStoreData)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -258,7 +259,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->putJson(route('stores.update', $store->id), $this->fakeStoreData)
+        $this->putJson(route('api.stores.update', $store->id), $this->fakeStoreData)
             ->assertJson(['error' => 'No estas autorizado para realizar esta acción.'])
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
@@ -272,7 +273,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->deleteJson(route('stores.destroy', $store->id))
+        $this->deleteJson(route('api.stores.destroy', $store->id))
             ->assertStatus(200);
 
         $this->assertDatabaseMissing('stores', $store->toArray());
@@ -288,7 +289,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->deleteJson(route('stores.destroy', $store->id))
+        $this->deleteJson(route('api.stores.destroy', $store->id))
             ->assertStatus(200);
     }
 
@@ -302,7 +303,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->deleteJson(route('stores.destroy', $store->id))
+        $this->deleteJson(route('api.stores.destroy', $store->id))
             ->assertStatus(200)
             ->assertJson([
                 'message' => 'Tienda eliminada correctamente'
@@ -318,7 +319,7 @@ class StoreControllerTest extends TestCase
         ]);
 
         // we run the api request as a non authenticated user
-        $this->deleteJson(route('stores.destroy', $store->id))
+        $this->deleteJson(route('api.stores.destroy', $store->id))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -332,7 +333,7 @@ class StoreControllerTest extends TestCase
 
         Sanctum::actingAs($this->user, ['*']);
 
-        $this->deleteJson(route('stores.destroy', $store->id))
+        $this->deleteJson(route('api.stores.destroy', $store->id))
             ->assertJson(['error' => 'No estas autorizado para realizar esta acción.'])
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }

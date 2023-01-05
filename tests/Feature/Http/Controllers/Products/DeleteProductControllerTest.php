@@ -39,13 +39,13 @@ class DeleteProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->deleteJson(route('products.destroy', $product))->assertOk();
+        $this->deleteJson(route('api.products.destroy', $product))->assertOk();
 
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
     }
-    
+
     /** @test */
     public function it_returns_correct_status_code()
     {
@@ -58,10 +58,10 @@ class DeleteProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->deleteJson(route('products.destroy', $product))
+        $this->deleteJson(route('api.products.destroy', $product))
             ->assertOk();
     }
-    
+
     /** @test */
     public function it_returns_correct_response()
     {
@@ -74,12 +74,12 @@ class DeleteProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->deleteJson(route('products.destroy', $product))
+        $this->deleteJson(route('api.products.destroy', $product))
             ->assertJson([
                 'message' => 'Producto eliminado correctamente',
             ]);
     }
-    
+
     /** @test */
     public function it_is_not_deleted_if_user_is_not_authenticated()
     {
@@ -90,10 +90,10 @@ class DeleteProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->deleteJson(route('products.destroy', $product))
+        $this->deleteJson(route('api.products.destroy', $product))
             ->assertUnauthorized();
     }
-    
+
     /** @test */
     public function it_is_not_deleted_if_user_is_not_the_product_owner()
     {
@@ -106,7 +106,7 @@ class DeleteProductControllerTest extends TestCase
             'category_id' => Category::factory()->create()->id,
         ]);
 
-        $this->deleteJson(route('products.destroy', $product))
+        $this->deleteJson(route('api.products.destroy', $product))
             ->assertForbidden();
     }
 }

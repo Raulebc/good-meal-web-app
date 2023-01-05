@@ -36,7 +36,7 @@ class ShowProductControllerTest extends TestCase
             ])->id,
         ]);
 
-        $this->getJson(route('products.show', $product))
+        $this->getJson(route('api.products.show', $product))
             ->assertOk()
             ->assertJsonStructure([
                 'data' => [
@@ -73,7 +73,7 @@ class ShowProductControllerTest extends TestCase
             ])->id,
         ]);
 
-        $this->getJson(route('products.show', $product))
+        $this->getJson(route('api.products.show', $product))
             ->assertOk()
             ->assertExactJson([
                 'data' => [
