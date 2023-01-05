@@ -5,7 +5,6 @@ import StoreCard from '@/Components/StoreCard.vue';
 import GeneralHeader from '@/Layouts/Headers/Global.vue';
 
 defineProps(['stores']);
-
 </script>
 
 <template>
@@ -16,19 +15,19 @@ defineProps(['stores']);
 
         <div class="flex justify-between border-b border-b-gray-100">
             <div class="flex justify-center w-1/3">
-				<a href="#" class="border-b-pink-500 border-b-4 w-full flex justify-center p-2">
+				<button @click="$inertia.visit(`/stores?status=stock`)" class="border-b-pink-500 border-b-4 w-full flex justify-center p-2">
 					Con stock
-				</a>
+				</button>
 			</div>
             <div class="flex justify-center w-1/3">
-				<a href="#" class="w-full flex justify-center p-2">
+				<button @click="$inertia.visit(`/stores?status=sold_out`)" class="w-full flex justify-center p-2">
 					Sin stock
-				</a>
+				</button>
 			</div>
             <div class="flex justify-center w-1/3">
-				<a href="#" class="w-full flex justify-center p-2">
+				<button @click="$inertia.visit(`/stores?status=con-stock`)" class="w-full flex justify-center p-2">
 					Favoritos
-				</a>
+				</button>
 			</div>
         </div>
 

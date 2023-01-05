@@ -8,9 +8,6 @@ const props = defineProps(['store']);
  * @returns {string}
  */
 const storeHours = computed(() => {
-	console.log(props.store.store_hours);
-	console.log('====================');
-	console.log(props.store);
 	if (!props.store_hours) {
 		return 'No hay good bags';
 	}
