@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('website');
             $table->foreignId('owner_id')->constrained('users');
+            $table->unsignedBigInteger('has_stock')->default(0);
             
             $table->timestamps();
         });

@@ -2,15 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Stores\Store;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Observers\Stores\StoreObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event to listener mappings for the application.
+     * The event to listener mappings for the application. 
      *
      * @var array<class-string, array<int, class-string>>
      */
@@ -27,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Store::observe(StoreObserver::class);
     }
 
     /**

@@ -23,6 +23,7 @@ class Store extends Model
         'website',
         'owner_id',
 
+        // 'image',
         // 'latitude',
         // 'longitude',
     ];
@@ -84,5 +85,15 @@ class Store extends Model
         $this->products()
             ->where('stock', '>', 0)
             ->orderBy('price', 'asc');
+    }
+
+    /**
+     * The number of products in stock.
+     * 
+     * @return int
+     */
+    public function countInStockProducts(): int
+    {
+        return $this->products()->where('stock', '>', 0)->count('id');
     }
 }
