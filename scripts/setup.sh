@@ -24,28 +24,29 @@ echo "${GREEN}Base de datos creada."
 
 
 # Instalamos las dependencias
-php artisan sail:install -n --with=selenium
+php artisan sail:install --with=selenium
 echo "${GREEN}Instalación de Sail terminada"
+
+
+# Removemos cualquier contenedor "orphan" para este proyecto
+# docker-compose down --remove-orphans
+
+# Levantamos los contenedores
+./vendor/bin/sail up --wait
+echo "${GREEN}Contenedores levantados"
 
 
 # Generamos la key
 ./vendor/bin/sail artisan key:generate
 
 
-# Removemos cualquier contenedor "orphan" para este proyecto
-docker-compose down --remove-orphans
-
-
-# Levantamos los contenedores
-./vendor/bin/sail up -d --remove-orphans --no-recreate --build
-echo "${GREEN}Contenedores levantados"
-
-
 # Ejecutamos las migraciones con los seeders
 ./vendor/bin/sail artisan migrate:fresh --seed
 
+
 # Instalamos las dependencias de node
 ./vendor/bin/sail npm install
+
 
 # Compilamos los assets de vue
 ./vendor/bin/sail npm run build

@@ -55,40 +55,46 @@ Copiamos el environment
   cp .env.example .env
 ```
 
-Instalamos el scaffolding para crear los servicios con sail
-
-```
-  php artisan sail:install
-```
-
-Levantamos los contenedores con sail y con `-d` en background
-
-```
-  ./vendor/bin/sail up -d
-```
-
 Creamos el archivo donde guardaremos los datos de las tablas
 
 ```
   touch ./database/good_meal.sqlite
 ```
 
+Instalamos el scaffolding para crear los servicios con sail
+
+```
+  php artisan sail:install --with=selenium
+```
+
+Levantamos los contenedores con sail y con `--wait` para asegurarnos que se levanten correctamente los contenedores.
+
+```
+  ./vendor/bin/sail up --wait
+```
+
+Generamos la key del proyecto, para asegurar sesiones, encriptar cookies entre otros.
+
+```
+  ./vendor/bin/sail artisan key:generate
+```
+
 Ejecutamos las migraciones con seeders. Ocupamos `fresh` solo para asegurarnos que si ya tiene datos la base de datos, sean eliminados
 y que corra como una base de datos nueva. El --seed lo ocupamos para que peristan en base de datos las tablas "mock" que creamos.
 
 ```
-  sail artisan migrate:fresh --seed
+  ./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
 Instalamos las dependencias de node
 
 ```
-  sail npm install
+  ./vendor/bin/sail npm install
 ```
 Compilamos los assets
 
 ```
-  sail npm run build
+  ./vendor/bin/sail npm run build
 ```
 
 ## **Probar la app**
